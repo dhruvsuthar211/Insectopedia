@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insectopedia</title>
+    </head>
+<body>
+    <nav>
+        <h1><a href="{% url 'insect_list' %}">Insectopedia</a></h1>
+    </nav>
+    <hr>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

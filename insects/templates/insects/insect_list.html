@@ -1,0 +1,30 @@
+{% extends 'insects/base.html' %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+    <div style="margin-bottom: 30px; text-align: center;">
+        <h2>All Insect Species</h2>
+        <p>Browsing the complete Insectopedia archive.</p>
+    </div>
+
+    <div class="species-grid">
+        {% for insect in insects %}
+        <a href="{% url 'insect_detail' insect.pk %}" class="species-card">
+            <div class="card-image-wrapper">
+                {% if insect.image %}
+                    <img src="{{ insect.image.url }}" alt="{{ insect.common_name }}">
+                {% else %}
+                    <span>No Image</span>
+                {% endif %}
+            </div>
+            <div class="card-content">
+                <h3>{{ insect.common_name }}</h3>
+                <span style="font-size: 0.8rem; color: #666; font-style: italic;">{{ insect.scientific_name }}</span>
+            </div>
+        </a>
+        {% empty %}
+            <p>No insects in the collection yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

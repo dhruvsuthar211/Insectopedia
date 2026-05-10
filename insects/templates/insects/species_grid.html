@@ -1,0 +1,33 @@
+{% extends 'insects/base.html' %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+    <div style="margin-bottom: 30px;">
+        <a href="{% url 'family_list' family.order.name %}" style="text-decoration: none; color: #666; display: inline-block; margin-bottom: 15px;">&larr; Back to {{ family.order.name }} Families</a>
+        <h2 style="color: #1a3c15; margin: 0;">Family: {{ family }}</h2>
+        <p style="color: #666; margin-top: 5px;">Showing cataloged species for this family.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px;">
+        {% for insect in species_list %}
+        <a href="{% url 'insect_detail' insect.slug %}" style="display: block; text-decoration: none; color: inherit; background: white; border-radius: 10px; overflow: hidden; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s;">
+            <div style="width: 100%; aspect-ratio: 1/1; background: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #888; overflow: hidden;">
+                {% if insect.main_image %}
+                    <img src="{{ insect.main_image.url }}" alt="{{ insect.common_name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                {% else %}
+                    <span>No Image Available</span>
+                {% endif %}
+            </div>
+            <div style="padding: 15px;">
+                <h3 style="margin: 0 0 5px 0; font-size: 1.1rem; color: #1a3c15;">{{ insect.common_name|default:insect.scientific_name }}</h3>
+                <span style="font-size: 0.85rem; color: #666; font-style: italic;">{{ insect.scientific_name }}</span>
+            </div>
+        </a>
+        {% empty %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: white; border-radius: 10px; color: #666;">
+            No species currently cataloged for the {{ family }} family.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

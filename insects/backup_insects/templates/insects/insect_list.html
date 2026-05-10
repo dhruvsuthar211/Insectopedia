@@ -1,0 +1,15 @@
+{% extends 'insects/base.html' %}
+
+{% block content %}
+    <h2>All Insects</h2>
+    <ul>
+        {% for insect in insects %}
+            <li>
+                <a href="{% url 'insect_detail' insect.pk %}">{{ insect.common_name }}</a> 
+                (<em>{{ insect.scientific_name }}</em>)
+            </li>
+        {% empty %}
+            <li>No insects found yet. Let's add some in the admin!</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

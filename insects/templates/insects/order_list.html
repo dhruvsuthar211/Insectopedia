@@ -1,0 +1,56 @@
+{% extends 'insects/base.html' %}
+{% block content %}
+<div class="list-container">
+    <div style="max-width: 900px; margin: 40px auto 10px; padding: 0 20px;">
+        <h2 style="color: #1a3c15; border-bottom: 2px solid #2d5a27; padding-bottom: 10px; font-size: 2.2rem; font-family: 'Playfair Display', serif;">Explore The Insect Based On The Family They Belong</h2>
+        <p style="color: #666; margin-bottom: 30px; font-size: 1.1rem;">
+            Discover the highest categorization level in the Insectopedia. Each order groups families sharing major characteristics.
+        </p>
+    </div>
+    
+    <div class="vertical-list">
+        {% for item in orders %}
+            <a href="{% url 'family_list' item.name %}" class="list-item">
+                <div class="order-card-inner">
+                    
+                    <!-- LEFT SIDE: Mapped Images for Major Orders -->
+                    {% if item.name == "Coleoptera" %}
+                        <div class="order-image-box" style="background-image: url('https://i.pinimg.com/736x/47/be/39/47be39d9b2a269e14a2decfde0d27632.jpg');"></div>
+                    {% elif item.name == "Lepidoptera" %}
+                        <div class="order-image-box" style="background-image: url('https://i.pinimg.com/1200x/7d/ad/df/7daddf398f80b5a18c3addd8b7604ef7.jpg');"></div>
+                    {% elif item.name == "Orthoptera" %}
+                        <div class="order-image-box" style="background-image: url('https://i.pinimg.com/736x/c9/60/58/c960589e4b118ff45f805f6979368173.jpg');"></div>
+                    {% elif item.name == "Diptera" %}
+                        <div class="order-image-box" style="background-image: url('https://i.pinimg.com/736x/36/9f/4e/369f4e40891a4370a5e9496ca6d7b2ed.jpg');"></div>
+                    {% elif item.name == "Hemiptera" %}
+                        <div class="order-image-box" style="background-image: url('https://i.pinimg.com/1200x/68/57/b5/6857b523cce819df3a189f32606c3813.jpg');"></div>
+                    {% elif item.name == "Odonata" %}
+                        <div class="order-image-box" style="background-image: url('https://i.pinimg.com/736x/cf/22/a6/cf22a62ee7352e6b3a1c0900fc987ae1.jpg');"></div>
+                    {% elif item.name == "Hymenoptera" %}
+                        <div class="order-image-box" style="background-image: url('https://i.pinimg.com/1200x/e4/32/53/e43253bb8a4e5d8f5f2f0460adab26c3.jpg');"></div>
+                    {% else %}
+                        <!-- Fallback default if image not mapped -->
+                        <div class="order-image-box" style="background-color: var(--primary-green);"></div>
+                    {% endif %}
+
+                    <!-- RIGHT SIDE: Text Content and Link -->
+                    <div class="order-content-box">
+                        <div class="order-text">
+                            <h3>{{ item.name }}</h3>
+                            {% if item.common_name %}
+                                <span class="common-name">{{ item.common_name }}</span>
+                            {% endif %}
+                            
+                            <!-- FIX 1: Removed truncatewords so the full text shows! -->
+                            <p class="brief-description">{{ item.description|default:"<em>Description currently under review for the Kerala Western Ghats dataset.</em>"|linebreaksbr }}</p>
+                        </div>
+                        <div class="view-link">View Families &rarr;</div>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <div style="padding: 40px; text-align: center; color: #666; background: white; border-radius: 12px; box-shadow: var(--card-shadow);">No orders currently cataloged.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

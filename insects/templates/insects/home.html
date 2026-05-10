@@ -1,0 +1,98 @@
+{% extends 'insects/base.html' %}
+
+{% block content %}
+<div class="home-container">
+    <div class="branding" style="text-align: center; padding: 40px 20px;">
+        <h1 style="color: #1a3c15; margin-bottom: 10px;">The Digital Archive of Entomology</h1>
+        
+        <p style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.6; color: #444;">
+            Explore the intricate details, diets, and habitats of the insect world. 
+            Whether you are a researcher, student, or nature enthusiast, Insectopedia provides 
+            a structured gateway into the diversity of six-legged life.
+        </p>
+
+        <div class="disclaimer-box">
+            <strong><u>Development Notice:</u></strong> Insectopedia is currently under active development. 
+            At present, the database is highly specialized—all cataloged species, imagery, and geographical 
+            data are strictly sourced from the <strong>Kerala Western Ghats</strong> region. 
+            We are working diligently to expand our coverage to include a broader range of species and regions in the near future. 
+        </div>
+        
+        <div class="search-box" style="margin: 40px 0; position: relative;">
+            <input type="text" id="search-input" placeholder="Search by scientific or common name..." style="padding: 15px; width: 400px; border: 1px solid #ccc; border-radius: 8px 0 0 8px;">
+            <button style="padding: 15px 30px; border-radius: 0 8px 8px 0;">Search</button>
+            
+            <div id="search-dropdown" class="autocomplete-dropdown"></div>
+        </div>
+        
+
+        <div class="suggestions" style="max-width: 1000px; margin: 0 auto;">
+            <h3 style="color: #1a3c15; margin-bottom: 20px;">Try searching these major species:</h3>
+            
+            <div class="order-grid">
+                <a href="{% url 'family_list' 'Lepidoptera' %}" class="order-tab" style="background-image: url('https://i.pinimg.com/1200x/7d/ad/df/7daddf398f80b5a18c3addd8b7604ef7.jpg');">
+                    <span>Lepidoptera</span>
+                </a>
+                
+                <a href="{% url 'family_list' 'Coleoptera' %}" class="order-tab" style="background-image: url('https://i.pinimg.com/736x/47/be/39/47be39d9b2a269e14a2decfde0d27632.jpg');">
+                    <span>Coleoptera</span>
+                </a>
+                
+                <a href="{% url 'family_list' 'Odonata' %}" class="order-tab" style="background-image: url('https://i.pinimg.com/1200x/68/57/b5/6857b523cce819df3a189f32606c3813.jpg');">
+                    <span>Odonata</span>
+                </a>
+                
+                <a href="{% url 'family_list' 'Hymenoptera' %}" class="order-tab" style="background-image: url('https://i.pinimg.com/1200x/e4/32/53/e43253bb8a4e5d8f5f2f0460adab26c3.jpg');">
+                    <span>Hymenoptera</span>
+                </a>
+                
+                <a href="{% url 'order_list' %}" class="order-tab" style="background-image: url('https://i.pinimg.com/736x/2f/09/85/2f0985c6bec0ce9d3126ce9a03161f16.jpg');">
+                    <span>Many More</span>
+                </a>
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    const searchInput = document.getElementById('search-input');
+    const dropdown = document.getElementById('search-dropdown');
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value;
+        
+        if (query.length < 2) {
+            dropdown.style.display = 'none';
+            return;
+        }
+
+        fetch(`/live-search/?q=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                dropdown.innerHTML = ''; // Clear old results
+                if (data.data.length > 0) {
+                    data.data.forEach(item => {
+                        const link = document.createElement('a');
+                        link.href = item.url;
+                        link.className = 'dropdown-item';
+                        link.innerHTML = `<strong>${item.name}</strong> <span style="color:#888; font-size:0.8rem;">(${item.type})</span>`;
+                        dropdown.appendChild(link);
+                    });
+                    dropdown.style.display = 'block';
+                } else {
+                    dropdown.style.display = 'none';
+                }
+            });
+    });
+
+    // Hide dropdown if clicked outside
+    document.addEventListener('click', function(e) {
+        if (e.target !== searchInput) {
+            dropdown.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
