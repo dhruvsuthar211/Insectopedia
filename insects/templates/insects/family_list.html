@@ -10,10 +10,24 @@
     <div class="vertical-list" style="margin-top: 20px;">
         {% for item in families %}
         <a href="{% url 'species_grid' item.slug %}" class="list-item" style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background: white; margin-bottom: 15px; border-radius: 8px; text-decoration: none; color: #333; border-left: 5px solid #2d5a27; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s;">
-            <div>
-                <h3 style="margin: 0 0 5px 0; color: #1a3c15;">{{ item.name }}</h3>
-            </div>
-            <div style="color: #2d5a27; font-weight: bold;">View Species &rarr;</div>
+            <div class="order-content-box" style="flex-direction: column; align-items: flex-start; justify-content: center;">
+                        <div class="order-text" style="width: 100%;">
+                            <h3 style="margin-bottom: 8px; color: #1a3c15;">{{ item.name }}</h3>
+                            
+                            <p class="brief-description" style="margin-bottom: 15px; font-size: 1rem; color: #444; line-height: 1.6;">
+                                {{ item.description|default:"Explore the diverse species cataloged within this family."|linebreaksbr }}
+                            </p>
+                            
+                            {% if sample_species %}
+                                <div style="display: inline-block; background: #f4f1ea; padding: 4px 10px; border-radius: 4px; border-left: 3px solid var(--accent-green);">
+                                    <span style="font-size: 0.8rem; text-transform: uppercase; font-weight: bold; color: #666; letter-spacing: 0.5px;">Example:</span>
+                                    <span style="font-size: 0.9rem; color: var(--primary-green); margin-left: 5px;">{{ sample_species.common_name }}</span>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="view-link" style="margin-top: 15px; align-self: flex-end; padding-left: 0;">View Species &rarr;</div>
+                    </div>
         </a>
         {% empty %}
         <div style="padding: 20px; text-align: center; color: #666; background: white; border-radius: 8px;">No families currently cataloged for this order.</div>
